@@ -1,5 +1,5 @@
-<img width="6912" height="3456" alt="UninaCorsiStudioBot" src="https://github.com/user-attachments/assets/704f8cc4-e030-46ee-93c1-d30a0073cf66" />
 
+<img width="6912" height="3456" alt="UninaCorsiStudioBot" src="https://github.com/user-attachments/assets/a74e0686-ab8a-49c4-80b1-faf44ae8ff61" />
 
 # UninaCorsiStudioBot
 
