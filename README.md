@@ -3,7 +3,7 @@
 
 # UninaCorsiStudioBot
 
-Un bot telegram per consultare **corsi**, **dipartimenti** e **informazioni** per l'<a href='https://unina.it'>Università degli Studi di Napoli Federico II</a>. 
+Un bot telegram per consultare **corsi**, **dipartimenti** e **informazioni** per l'<a href='https://www.unina.it/it/'>Università degli Studi di Napoli Federico II</a>. 
 
 Sviluppato in **Go** con [GoBotAPI](https://github.com/GoBotApiOfficial/gobotapi).
 
