@@ -87,17 +87,15 @@ func SearchCoursesByQuery(client *gobotapi.Client, update types.Message) {
 
 		var keyboard [][]types.InlineKeyboardButton
 
-		coursesMessage := fmt.Sprintf("Ho trovato %d corsi:\n\n", len(courses))
+		coursesMessage := fmt.Sprintf("💡 Ho trovato <b>%d</b> corsi:\n\n", len(courses))
 		for _, course := range courses {
 			keyboard = append(keyboard, []types.InlineKeyboardButton{
 				{
 					Text:         course.Nome + " (" + course.Cod + ")",
-					CallbackData: fmt.Sprintf("course_%s", course.Cod),
+					CallbackData: fmt.Sprintf("course_info_%s_%d", course.Cod, 0),
 				},
 			})
 		}
-
-		coursesMessage += fmt.Sprintf("\nTotale corsi trovati: %d", len(courses))
 
 		keyboard = append(keyboard, []types.InlineKeyboardButton{{
 			Text:         "🔎 Cerca ancora",
@@ -110,8 +108,9 @@ func SearchCoursesByQuery(client *gobotapi.Client, update types.Message) {
 		})
 
 		client.Invoke(&methods.SendMessage{
-			ChatID: update.From.ID,
-			Text:   coursesMessage,
+			ChatID:    update.From.ID,
+			Text:      coursesMessage,
+			ParseMode: "HTML",
 			ReplyMarkup: &types.InlineKeyboardMarkup{
 				InlineKeyboard: keyboard,
 			},

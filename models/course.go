@@ -27,6 +27,8 @@ type Course struct {
 
 	DipartimentoCod string     `json:"dipCod" gorm:"size:10"`
 	Dipartimento    Department `gorm:"foreignKey:DipartimentoCod;references:Cod" json:"-"`
+
+	Teachings []Teaching `gorm:"foreignKey:CodCorso;references:Cod" json:"-"`
 }
 
 type CoursesResponse struct {

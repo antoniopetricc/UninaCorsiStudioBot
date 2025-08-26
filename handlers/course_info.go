@@ -24,6 +24,12 @@ func buildCourseInfoReplyMarkup(course models.Course, currentPage int) *types.In
 			},
 			{
 				{
+					Text:         "🎒 Insegnamenti",
+					CallbackData: fmt.Sprintf("course_teachings_%s_%d", course.Cod, currentPage),
+				},
+			},
+			{
+				{
 					Text:         "🔙 Torna ai corsi",
 					CallbackData: fmt.Sprintf("page_%d", currentPage),
 				},
@@ -36,7 +42,6 @@ func CourseInfo(client *gobotapi.Client, update types.CallbackQuery) {
 
 	if strings.HasPrefix(update.Data, "course_info_") {
 
-		// course_info_<cod>_<page>
 		courseCod := strings.SplitN(update.Data, "_", 4)[2]
 		currentPage, err := strconv.Atoi(strings.SplitN(update.Data, "_", 4)[3])
 		if err != nil {

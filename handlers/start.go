@@ -32,10 +32,7 @@ func buildWelcomeMessage(update types.Message) string {
 	var fullName = html.EscapeString(update.From.FirstName + " " + update.From.LastName)
 	mention := fmt.Sprintf(`<a href="tg://user?id=%d">%s</a>`, update.From.ID, fullName)
 
-	return fmt.Sprintf(
-		"👋 <b>Benvenuto</b> %s!\n\nBenvenuto nel bot per consultare i <b>Corsi di Studio</b> dell'<b>Università degli Studi di Napoli Federico II</b> 🎓\n\n📚 Usa i bottoni qui <b>sotto</b> per iniziare a esplorare i corsi disponibili.",
-		mention,
-	)
+	return fmt.Sprintf("👋 <b>Benvenuto</b> %s!\n\nBenvenuto nel bot per consultare i <b>Corsi di Studio</b> dell'<b>Università degli Studi di Napoli Federico II</b> 🎓\n\n📚 Usa i bottoni qui <b>sotto</b> per iniziare a esplorare i corsi disponibili.", mention)
 }
 
 func Start(client *gobotapi.Client, update types.Message) {

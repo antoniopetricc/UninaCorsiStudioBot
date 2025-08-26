@@ -31,8 +31,6 @@ func CourseInfoDescription(client *gobotapi.Client, update types.CallbackQuery) 
 
 	if strings.HasPrefix(update.Data, "course_desc_") {
 
-		// course_desc_<cod>_<page>
-
 		courseCod := strings.SplitN(update.Data, "_", 4)[2]
 		currentPage, err := strconv.Atoi(strings.SplitN(update.Data, "_", 4)[3])
 		if err != nil {
@@ -80,6 +78,10 @@ func CourseInfoDescription(client *gobotapi.Client, update types.CallbackQuery) 
 				ReplyMarkup: retryInlineKeyboard,
 			})
 			return
+		}
+
+		if len(course.InBreve) > 4000 {
+			course.InBreve = course.InBreve[:4000] + "..."
 		}
 
 		messageText := fmt.Sprintf("ℹ️ <b>In breve su %s (%s)</b>\n\n%s",
