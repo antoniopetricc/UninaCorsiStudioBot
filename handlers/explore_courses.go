@@ -20,7 +20,7 @@ func buildExploreCourseReplyMarkup(courses []models.Course, currentPage, totalPa
 		keyboard = append(keyboard, []types.InlineKeyboardButton{
 			{
 				Text:         course.Nome + " (" + course.Cod + ")",
-				CallbackData: fmt.Sprintf("course_%s", course.Cod),
+				CallbackData: fmt.Sprintf("course_info_%s_%d", course.Cod, currentPage),
 			},
 		})
 	}

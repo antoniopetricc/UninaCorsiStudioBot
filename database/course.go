@@ -50,3 +50,7 @@ func SearchCourses(query string, page int) ([]models.Course, int64, error) {
 	}
 	return corsi, total, nil
 }
+
+func UpdateCourseDescription(cod string, description string) error {
+	return config.DB.Model(&models.Course{}).Where("cod = ?", cod).Update("in_breve", description).Error
+}

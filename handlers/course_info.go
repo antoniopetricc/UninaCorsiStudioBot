@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"main/database"
+	"main/models"
+	"strconv"
 	"strings"
 
 	"github.com/GoBotApiOfficial/gobotapi"
@@ -11,19 +13,19 @@ import (
 	"github.com/GoBotApiOfficial/gobotapi/types"
 )
 
-func buildCourseInfoReplyMarkup() *types.InlineKeyboardMarkup {
+func buildCourseInfoReplyMarkup(course models.Course, currentPage int) *types.InlineKeyboardMarkup {
 	return &types.InlineKeyboardMarkup{
 		InlineKeyboard: [][]types.InlineKeyboardButton{
 			{
 				{
-					Text:         "🏫 Torna ai corsi",
-					CallbackData: "explore_courses",
+					Text:         "📖 In breve",
+					CallbackData: fmt.Sprintf("course_desc_%s_%d", course.Cod, currentPage),
 				},
 			},
 			{
 				{
-					Text:         "🔙 Torna al menu principale",
-					CallbackData: "start",
+					Text:         "🔙 Torna ai corsi",
+					CallbackData: fmt.Sprintf("page_%d", currentPage),
 				},
 			},
 		},
@@ -32,9 +34,16 @@ func buildCourseInfoReplyMarkup() *types.InlineKeyboardMarkup {
 
 func CourseInfo(client *gobotapi.Client, update types.CallbackQuery) {
 
-	if strings.HasPrefix(update.Data, "course_") {
+	if strings.HasPrefix(update.Data, "course_info_") {
 
-		course, err := database.GetCourse(strings.TrimPrefix(update.Data, "course_"))
+		// course_info_<cod>_<page>
+		courseCod := strings.SplitN(update.Data, "_", 4)[2]
+		currentPage, err := strconv.Atoi(strings.SplitN(update.Data, "_", 4)[3])
+		if err != nil {
+			currentPage = 0
+		}
+		course, err := database.GetCourse(courseCod)
+
 		if err != nil {
 			log.Printf("Error fetching course: %v", err)
 			client.Invoke(&methods.EditMessageText{
@@ -45,16 +54,7 @@ func CourseInfo(client *gobotapi.Client, update types.CallbackQuery) {
 			return
 		}
 
-		messageText := fmt.Sprintf(
-			`📚 <b>%s</b> (%s)
-
-🏫 <b>Dipartimento:</b> %s
-🎓 <b>Tipo di corso:</b> %s
-⏳ <b>Durata:</b> %d anni
-👨‍🏫 <b>Coordinatore:</b> %s %s
-📧 <b>Email:</b> %s
-🏛 <b>Sedi:</b> %s
-🌐 <b>Lingua:</b> %s`,
+		messageText := fmt.Sprintf("📚 <b>%s</b> (%s)\n\n🏫 <b>Dipartimento:</b> %s\n🎓 <b>Tipo di corso:</b> %s\n⏳ <b>Durata:</b> %d anni\n👨‍🏫 <b>Coordinatore:</b> %s %s\n📧 <b>Email:</b> %s\n🏛 <b>Sedi:</b> %s\n🌐 <b>Lingua:</b> %s",
 			course.Nome,
 			course.Cod,
 			course.Dipartimento.DipDes,
@@ -73,7 +73,7 @@ func CourseInfo(client *gobotapi.Client, update types.CallbackQuery) {
 			MessageID:   update.Message.MessageID,
 			Text:        messageText,
 			ParseMode:   "HTML",
-			ReplyMarkup: buildCourseInfoReplyMarkup(),
+			ReplyMarkup: buildCourseInfoReplyMarkup(course, currentPage),
 		})
 
 		if err != nil {

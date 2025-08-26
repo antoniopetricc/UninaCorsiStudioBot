@@ -1,6 +1,8 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Course struct {
 	Cod                 string `json:"cdsCod" gorm:"primaryKey"`
@@ -21,6 +23,7 @@ type Course struct {
 	StatoAttivazione    string `json:"statoAttivazione"`
 	Attivo              bool   `json:"attivo"`
 	Esaurimento         bool   `json:"esaurimento"`
+	InBreve             string `json:"inBreve"`
 
 	DipartimentoCod string     `json:"dipCod" gorm:"size:10"`
 	Dipartimento    Department `gorm:"foreignKey:DipartimentoCod;references:Cod" json:"-"`
@@ -33,6 +36,16 @@ type CoursesResponse struct {
 	Items       []Course `json:"items"`
 }
 
+type CourseDescriptionResponse struct {
+	ID           string `json:"id"`
+	Content      string `json:"content"`
+	ValidityYear int    `json:"validityYear"`
+}
+
+func (Course) TableName() string {
+	return "courses"
+}
+
 func (c *Course) AfterFind(tx *gorm.DB) (err error) {
 	if c.Dipartimento == (Department{}) {
 		dipartimento := Department{}
@@ -40,5 +53,6 @@ func (c *Course) AfterFind(tx *gorm.DB) (err error) {
 			c.Dipartimento = dipartimento
 		}
 	}
+
 	return
 }

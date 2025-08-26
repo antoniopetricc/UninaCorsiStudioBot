@@ -41,6 +41,7 @@ func main() {
 	client.OnCallbackQuery(filters.Filter(handlers.Departments, filters.And(consts.Data("departments"), consts.DefaultAntiFlood)))
 	client.OnCallbackQuery(filters.Filter(handlers.StartCb, filters.And(consts.Data("start"), consts.DefaultAntiFlood)))
 	client.OnCallbackQuery(filters.Filter(handlers.CourseInfo, filters.And(consts.DefaultAntiFlood)))
+	client.OnCallbackQuery(filters.Filter(handlers.CourseInfoDescription, filters.And(consts.DefaultAntiFlood)))
 	client.OnAnyMessageEvent(filters.Filter(handlers.SearchCoursesByQuery, consts.DefaultAntiFlood))
 
 	client.Run()
